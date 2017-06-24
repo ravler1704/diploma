@@ -33,4 +33,4 @@ admin.php?r=question/delete
 3. Нужно ли выносить логику относящуюся к административной части из QuestionController
 и  из папки question в отдельный контроллер и папку ?
 
-4. Куда лучше поместить echoDel.php, updatePassword.php и т.п.?
+4. Куда лучше поместить echoDel.php, updatePassword.php и т.п.?&
