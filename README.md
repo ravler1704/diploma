@@ -28,9 +28,9 @@ admin.php?r=question/delete
 1. Правильно ли я разместил HTML код главной страницы в site/index.php?
 Если правильно, то может туда же поместить папку assets?
 
-2. Что должно быть в файлах question/index.php question/update.php ?
+2. Что должно быть в файле question/index.php  ?
 
 3. Нужно ли выносить логику относящуюся к административной части из QuestionController
 и  из папки question в отдельный контроллер и папку ?
 
-4. Куда лучше поместить echoDel.php, updatePassword.php и т.п.?&
+4. Куда лучше поместить echoDel.php, updatePassword.php и т.п.?
