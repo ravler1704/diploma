@@ -11,4 +11,10 @@ class Controller {                                                              
         $content = View::renderFile($viewPath, true);                               //Сохраняем в переменную $content код, содержащийся в файле, имеющем путь $viewPath. Что было бы если второй аргумент был бы false ??????
         require App::getRoot() . 'views/layouts/' . $this->layout . '.php';         //Подключаем файл шаблона (слоя), с именем, соответствующим имени свойства в конкретном объекте (по умолчанию это .../views/layouts/main.php)
     }
+
+    public function redirect($to) {
+        $location = '/index.php?r=' . $to;
+        header("Location: $location");
+        die;
+    }
 }

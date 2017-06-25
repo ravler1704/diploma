@@ -1,5 +1,6 @@
 <?php
 
+// Контроллер пользователя
 class SiteController extends Controller {                       //Контроллер для пользовательской части сайта. SiteController наследует все св-ва и методы Controller
 
     public function indexAction()                               //Функция вывода главной страницы

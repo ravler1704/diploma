@@ -1,7 +1,8 @@
 <?
 require_once __DIR__ . '/../../lib/database/DataBase.php';
 $sth = DataBase::select('*', 'users');
-
+$questions = new Questions();
+$items = $questions->select();
 ?>
 
 <h1>Таблица администраторов</h1>
@@ -12,7 +13,7 @@ $sth = DataBase::select('*', 'users');
         <th>Смена пароля</th>
         <th>Удаление</th>
     </tr>
-    <? foreach ($sth as $value) { ?>
+    <? foreach ($items as $value) { ?>
     <tr>
         <td><?= $value['name_users']; ?></td>
         <td>

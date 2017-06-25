@@ -1,37 +1,75 @@
 <?php
 
-class DataBase                                                                              //класс для подключения к БД
+/**
+ * Класс для подключения к БД
+ * Class DataBase
+ * $db = new DataBase('localhost', 'faq', 'root', '');
+ * $db->select(...)
+ * $connection = $db->getConnection();
+ */
+// TODO Привести к номральному виду комментарии
+class DataBase
 {
-	/**
-	 * Подключение к базе данных mysql
-	 */
-	public static function connect($host, $dbname, $user, $pass)                            // static - позволяет обращаться к классу без создания экземпляра класса
-	{
-		try {                                                                                //Код генерирующий исключение
-			$db = new PDO('mysql:host='.$host.';dbname='.$dbname.';charset=utf8', $user, $pass);
-		} catch (PDOException $e) {                                                         //перехватыватывает исключение если оно возникло
-			die('Database error: '.$e->getMessage().'<br/>');                               //Выводит сообщение и прекращает выполнение текущего скрипта
-		}
-		return $db;                                                                         //Возвращает массив для подключения к БД
-	}
+    private $db;
 
-	public static function select($condition, $table) {                                                                 //отображение администраторов в таблице
-        $db = DataBase::connect('localhost', 'faq', 'root', '');
-        $sth = $db->prepare("SELECT $condition FROM $table");
+    function __construct($dsn, $user, $pass)
+    {
+        try {                                                                                //Код генерирующий исключение
+            $this->db = new PDO($dsn, $user, $pass);
+        } catch (PDOException $e) {                                                         //перехватыватывает исключение если оно возникло
+            die('Database error: ' . $e->getMessage() . '<br/>');                               //Выводит сообщение и прекращает выполнение текущего скрипта
+        }
+    }
+
+    function getConnection()
+    {
+        return $this->db;
+    }
+
+    /**
+     * @param $table
+     * @param array $where
+     * @return PDOStatement
+     * Example
+     * select('questions', ['author' => 'Make', '..' => '...'])
+     * TODO: Можно уосвершенствовать функцию, чтобы еще была возможность указывать операцию: select('questions', [['>', 'author' => 'Make'], ...)
+     */
+    public function select($table, array $where = [])
+    {
+
+        $sql = "SELECT * FROM $table";
+        $conditionParams = [];
+        if (!empty($where)) {
+            $conditions = [];
+            foreach ($where as $key => $value) {
+                $conditionParams[":$key"] = $value;
+                $conditions[] = "`$key` = :$value";
+            }
+            $sqlCondition = implode(', ', $conditions);
+            // $sql = $sql . '...'
+            // `name` = :name, `age` = :age
+            $sql .= " WHERE $sqlCondition";
+        }
+
+        $sth = $this->db->prepare($sql);
+        //:name => 'Ivan', `age` => 12
+        $sth->execute($conditionParams);
+        return $sth;
+
+    }
+
+    // TODO Убрать. Использовать select
+    public function selectThemes($condition, $table, $column, $value)
+    {                                                //отображение тем
+        $sth = $this->getConnection()->prepare("SELECT $condition FROM $table WHERE `$column` = $value");
         $sth->execute();
         return $sth;
 
     }
 
-    public static function selectThemes($condition, $table, $column, $value) {                                                //отображение тем
-        $db = DataBase::connect('localhost', 'faq', 'root', '');
-        $sth = $db->prepare("SELECT $condition FROM $table WHERE `$column` = $value");
-        $sth->execute();
-        return $sth;
-
-    }
-
-    public static function delete($table, $idSuffix, $id) {                                                           //удаление администратора
+    // TODO ...
+    public function delete($table, array $where = [])
+    {                                                           //удаление администратора
         $db = DataBase::connect('localhost', 'faq', 'root', '');
         $sth = $db->prepare("DELETE FROM `$table` WHERE `id_$idSuffix` = $id");
         $sth->execute();
@@ -39,7 +77,9 @@ class DataBase                                                                  
 
     }
 
-    public static function updatePassword($id_user, $new_password) {                                            //смена пароля администратора
+    // TODO Убрать. Использовать update
+    public function updatePassword($id_user, $new_password)
+    {                                            //смена пароля администратора
         $db = DataBase::connect('localhost', 'faq', 'root', '');
         $sth = $db->prepare("UPDATE `users` SET `password_users`= $new_password WHERE `id_users` = $id_user");
         $sth->execute();
@@ -47,7 +87,9 @@ class DataBase                                                                  
 
     }
 
-    public static function insertTheme($nameTheme) {                                                                 //добавление записи
+    // TODO Убрать. Использовать insert
+    public function insertTheme($nameTheme)
+    {                                                                 //добавление записи
         $db = DataBase::connect('localhost', 'faq', 'root', '');
         $sth = $db->prepare("INSERT INTO `themes`(`name_themes`) VALUES ('$nameTheme')");
         $sth->execute();
@@ -55,15 +97,37 @@ class DataBase                                                                  
 
     }
 
-    public static function insert($table, $field, $value) {                                                                 //
-        $db = DataBase::connect('localhost', 'faq', 'root', '');
-        $sth = $db->prepare("INSERT INTO `$table`(`$field`) VALUES ('$value')");
-        $sth->execute();
+    /**
+     * @param $table
+     * @param array $data
+     * @return PDOStatement
+     * Example:
+     * insert('questions', ['question' => 'What is...', 'author' => 'Mike'])
+     */
+    public function insert($table, array $data)
+    {
+        $values = [];
+        $columns = [];
+        $columnsVal = [];
+        foreach ($data as $key => $value) {
+            $columns[] = "`$key`";
+            $columnsVal[] = ":$key";
+            $values[":$key"] = $value;
+        }
+        $sqlColumns = implode(', ', $columns);
+        $sqlColumnsVal = implode(', ', $columnsVal);
+
+        // INSERT INTO `table` (`x1`, `x2`) VALUES(:x1, :x2)
+        $sth = $this->getConnection()->prepare("INSERT INTO `$table`($sqlColumns) VALUES ($sqlColumnsVal)");
+        // Указываем что вместо плейсхолдеров :x1, x2 подставляем реальные значения
+        $sth->execute($values);
         return $sth;
 
     }
 
-    public static function insertNewQuestion($table, array $fields, array $values) {                                                                 //
+    // TODO Убрать. Использовать insert
+    public function insertNewQuestion($table, array $fields, array $values)
+    {                                                                 //
         $db = DataBase::connect('localhost', 'faq', 'root', '');
         $sth = $db->prepare("INSERT INTO `$table`(`$fields`) VALUES ('$values')");
         $sth->execute();
@@ -71,31 +135,25 @@ class DataBase                                                                  
 
     }
 
-
-
-    public static function update($table, $set, $setValue, $idSuffix, $id) {                                                         //корректировка
+    // TODO ...
+    public function update($table, array $values, array $where = [])
+    {                                                         //корректировка
         $db = DataBase::connect('localhost', 'faq', 'root', '');
+        // UPDATE `table` SET `name` = :name, ... WHERE `id` = :id
         $sth = $db->prepare("UPDATE `$table` SET `$set`='$setValue' WHERE `id_$idSuffix`=$id");
+        // заменить плейсхолдеры ....
         $sth->execute();
         return $sth;
 
     }
 
-    public static function selectQuestionName($id) {                                                         //
+    // TODO Убрать. Использовать select
+    public function selectQuestionName($id)
+    {                                                         //
         $db = DataBase::connect('localhost', 'faq', 'root', '');
         $sth = $db->prepare("SELECT `*` FROM `themes` WHERE `id_themes`=$id");
         $sth->execute();
         return $sth;
-
-    }
-
-    // UPDATE users SET name = '...' WHERE ...
-    // update('users', ['name' => 'Иван', 'email' => ''], 'is_admin = 1 AND ....')
-    public function update2($table, array $data, $condition = null) {
-        $db = DataBase::connect('localhost', 'faq', 'root', '');
-        $sth = $db->prepare("UPDATE `questions` SET `question`=[value-2]");
-        $sth->execute();
-        echo 'Удалено';
 
     }
 }
