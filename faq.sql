@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июн 24 2017 г., 22:02
+-- Время создания: Июн 25 2017 г., 15:18
 -- Версия сервера: 5.7.16
 -- Версия PHP: 7.1.0
 
@@ -30,7 +30,8 @@ CREATE TABLE `questions` (
   `id_questions` int(11) NOT NULL,
   `question` text,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `autor` text,
+  `author` text,
+  `email` text NOT NULL,
   `answer` text,
   `theme_id` int(11) DEFAULT NULL,
   `status` text
@@ -40,9 +41,9 @@ CREATE TABLE `questions` (
 -- Дамп данных таблицы `questions`
 --
 
-INSERT INTO `questions` (`id_questions`, `question`, `date`, `autor`, `answer`, `theme_id`, `status`) VALUES
-(1, 'Как установить твиг?333', '2017-06-24 15:19:17', '123', 'йцуке', 3, 'НЕ опубликовано'),
-(5, 'вопрос', '2017-06-24 21:11:28', 'admin', 'ууу', 3, 'НЕ опубликовано');
+INSERT INTO `questions` (`id_questions`, `question`, `date`, `author`, `email`, `answer`, `theme_id`, `status`) VALUES
+(1, 'Как установить твиг?333', '2017-06-24 15:19:17', '123', '', 'йцуке', 3, 'НЕ опубликовано'),
+(5, 'вопрос', '2017-06-24 21:11:28', 'admin', '', 'ууу', 3, 'НЕ опубликовано');
 
 -- --------------------------------------------------------
 
@@ -115,7 +116,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id_questions` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_questions` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT для таблицы `themes`
 --
@@ -125,7 +126,7 @@ ALTER TABLE `themes`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

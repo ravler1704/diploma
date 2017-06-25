@@ -63,6 +63,16 @@ class DataBase                                                                  
 
     }
 
+    public static function insertNewQuestion($table, array $fields, array $values) {                                                                 //
+        $db = DataBase::connect('localhost', 'faq', 'root', '');
+        $sth = $db->prepare("INSERT INTO `$table`(`$fields`) VALUES ('$values')");
+        $sth->execute();
+        return $sth;
+
+    }
+
+
+
     public static function update($table, $set, $setValue, $idSuffix, $id) {                                                         //корректировка
         $db = DataBase::connect('localhost', 'faq', 'root', '');
         $sth = $db->prepare("UPDATE `$table` SET `$set`='$setValue' WHERE `id_$idSuffix`=$id");

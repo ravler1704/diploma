@@ -1,6 +1,6 @@
 <?
 require_once __DIR__ . '/../../lib/database/DataBase.php';
-$sth = DataBase::select('*', 'users', '*', '*');
+$sth = DataBase::select('*', 'users');
 
 ?>
 
