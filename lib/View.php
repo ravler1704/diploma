@@ -2,15 +2,21 @@
 
 class View
 {
-    public static function renderFile($fileName, $return = false)                       //Возвращает полное содержимое файла $fileName. Примает переменную $fileName - имя файла с расширением.      $return = false (по умолчанию)        static - разрешает обращение к методу без создания экземпляра класса
+    //Возвращает полное содержимое файла $fileName. Примает переменную $fileName - имя файла с расширением.      $return = false (по умолчанию)        static - разрешает обращение к методу без создания экземпляра класса
+    public static function renderFile($fileName, $return = false)
     {
-        ob_start();                                                                     //включает буферизацию вывода
-        require $fileName;                                                              //Подключаем файл $fileName
-        $result = ob_get_clean();                                                       //сохраняем в переменную $result содержимое буфера. ob_get_clean() - получает содержимое текущего буфера и затем удаляет текущий буфер.
-        if ($return) {                                                                  //если $return = true, то возвращает $result(содержимое буфера)
+        //включает буферизацию вывода
+        ob_start();
+        //Подключаем файл $fileName
+        require $fileName;
+        //сохраняем в переменную $result содержимое буфера. ob_get_clean() - получает содержимое текущего буфера и затем удаляет текущий буфер.
+        $result = ob_get_clean();
+        //если $return = true, то возвращает $result(содержимое буфера)
+        if ($return) {
             return $result;
         }
-        echo $result;                                                                   //если передаем true, то содержимое $result будет просто выведено на экран
+        //если передаем true, то содержимое $result будет просто выведено на экран
+        echo $result;
     }
 
 }

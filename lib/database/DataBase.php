@@ -14,10 +14,13 @@ class DataBase
 
     function __construct($dsn, $user, $pass)
     {
-        try {                                                                                //Код генерирующий исключение
+        //Код генерирующий исключение
+        try {
             $this->db = new PDO($dsn, $user, $pass);
-        } catch (PDOException $e) {                                                         //перехватыватывает исключение если оно возникло
-            die('Database error: ' . $e->getMessage() . '<br/>');                               //Выводит сообщение и прекращает выполнение текущего скрипта
+          //перехватыватывает исключение если оно возникло
+        } catch (PDOException $e) {
+            //Выводит сообщение и прекращает выполнение текущего скрипта
+            die('Database error: ' . $e->getMessage() . '<br/>');
         }
     }
 
@@ -34,6 +37,7 @@ class DataBase
      * select('questions', ['author' => 'Make', '..' => '...'])
      * TODO: Можно уосвершенствовать функцию, чтобы еще была возможность указывать операцию: select('questions', [['>', 'author' => 'Make'], ...)
      */
+
     public function select($table, array $where = [])
     {
 
@@ -58,52 +62,71 @@ class DataBase
 
     }
 
-    // TODO Убрать. Использовать select
-    public function selectThemes($condition, $table, $column, $value)
-    {                                                //отображение тем
-        $sth = $this->getConnection()->prepare("SELECT $condition FROM $table WHERE `$column` = $value");
-        $sth->execute();
-        return $sth;
-
-    }
-
-    // TODO ...
     public function delete($table, array $where = [])
-    {                                                           //удаление администратора
-        $db = DataBase::connect('localhost', 'faq', 'root', '');
-        $sth = $db->prepare("DELETE FROM `$table` WHERE `id_$idSuffix` = $id");
-        $sth->execute();
-        echo 'Удалено';
+    {
 
-    }
+        $sql = "DELETE * FROM $table";
+        $conditionParams = [];
+        if (!empty($where)) {
+            $conditions = [];
+            foreach ($where as $key => $value) {
+                $conditionParams[":$key"] = $value;
+                $conditions[] = "`$key` = :$value";
+            }
+            $sqlCondition = implode(', ', $conditions);
+            // $sql = $sql . '...'
+            // `name` = :name, `age` = :age
+            $sql .= " WHERE $sqlCondition";
+        }
 
-    // TODO Убрать. Использовать update
-    public function updatePassword($id_user, $new_password)
-    {                                            //смена пароля администратора
-        $db = DataBase::connect('localhost', 'faq', 'root', '');
-        $sth = $db->prepare("UPDATE `users` SET `password_users`= $new_password WHERE `id_users` = $id_user");
-        $sth->execute();
-        echo 'Пароль изменен';
-
-    }
-
-    // TODO Убрать. Использовать insert
-    public function insertTheme($nameTheme)
-    {                                                                 //добавление записи
-        $db = DataBase::connect('localhost', 'faq', 'root', '');
-        $sth = $db->prepare("INSERT INTO `themes`(`name_themes`) VALUES ('$nameTheme')");
-        $sth->execute();
+        $sth = $this->db->prepare($sql);
+        //:name => 'Ivan', `age` => 12
+        $sth->execute($conditionParams);
         return $sth;
 
     }
 
-    /**
-     * @param $table
-     * @param array $data
-     * @return PDOStatement
-     * Example:
-     * insert('questions', ['question' => 'What is...', 'author' => 'Mike'])
-     */
+    public function update($table, array $set = [], array $where = [])
+    {
+        $sql = "UPDATE $table";
+
+        /*
+         * SET
+         */
+        $conditionParamsSet = [];
+
+        $conditionsSet = [];
+        foreach ($set as $key => $value) {
+            $conditionParamsSet[":$key"] = $value;
+            $conditionsSet[] = "`$key` = :$value";
+        }
+        $sqlConditionSet = implode(', ', $conditionsSet);
+        // $sql = $sql . '...'
+        // `name` = :name, `age` = :age
+        $sql .= " SET $sqlConditionSet";
+
+        /*
+         * WHERE
+         */
+        $conditionParams = [];
+        if (!empty($where)) {
+            $conditions = [];
+            foreach ($where as $key => $value) {
+                $conditionParams[":$key"] = $value;
+                $conditions[] = "`$key` = :$value";
+            }
+            $sqlCondition = implode(', ', $conditions);
+            // $sql = $sql . '...'
+            // `name` = :name, `age` = :age
+            $sql .= " WHERE $sqlCondition";
+        }
+
+        $sth = $this->db->prepare($sql);
+        //:name => 'Ivan', `age` => 12
+        $sth->execute($conditionParams);
+        return $sth;
+    }
+
     public function insert($table, array $data)
     {
         $values = [];
@@ -125,39 +148,4 @@ class DataBase
 
     }
 
-    // TODO Убрать. Использовать insert
-    public function insertNewQuestion($table, array $fields, array $values)
-    {                                                                 //
-        $db = DataBase::connect('localhost', 'faq', 'root', '');
-        $sth = $db->prepare("INSERT INTO `$table`(`$fields`) VALUES ('$values')");
-        $sth->execute();
-        return $sth;
-
-    }
-
-    // TODO ...
-    public function update($table, array $values, array $where = [])
-    {                                                         //корректировка
-        $db = DataBase::connect('localhost', 'faq', 'root', '');
-        // UPDATE `table` SET `name` = :name, ... WHERE `id` = :id
-        $sth = $db->prepare("UPDATE `$table` SET `$set`='$setValue' WHERE `id_$idSuffix`=$id");
-        // заменить плейсхолдеры ....
-        $sth->execute();
-        return $sth;
-
-    }
-
-    // TODO Убрать. Использовать select
-    public function selectQuestionName($id)
-    {                                                         //
-        $db = DataBase::connect('localhost', 'faq', 'root', '');
-        $sth = $db->prepare("SELECT `*` FROM `themes` WHERE `id_themes`=$id");
-        $sth->execute();
-        return $sth;
-
-    }
 }
-
-
-
-

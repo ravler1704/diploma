@@ -14,5 +14,18 @@ abstract class Model
         App::getDb()->update($this->getTableName(), $data, $condition);
     }
 
-    // TODO остальные операции ...
+    public function select(array $condition = [])
+    {
+        App::getDb()->select($this->getTableName(), $condition);
+    }
+
+    public function delete(array $condition = [])
+    {
+        App::getDb()->delete($this->getTableName(), $condition);
+    }
+
+
+
+
+    //TODO остальные операции ...  DONE!?
 }

@@ -30,7 +30,7 @@ $sthSelectThemes = DataBase::selectThemes('*', 'questions', 'theme_id', $_GET['i
         <td><? echo $questionInTheme['date']; ?></td>
         <td><? echo $questionInTheme['answer']; ?></td>
         <td>
-            <form action="/views/question/updateQuestion.php">
+            <form action="/del/updateQuestion.php">
                 <input type='hidden' name="table" formmethod="get" value="questions" />
                 <input type='hidden' name="set" formmethod="get" value="answer" />
                 <textarea placeholder="Введите текст ответа" name="setValue" title=""><? echo $questionInTheme['answer'] ?></textarea>
@@ -42,12 +42,12 @@ $sthSelectThemes = DataBase::selectThemes('*', 'questions', 'theme_id', $_GET['i
 
         </td>
         <td><? echo $questionInTheme['status']; ?></td>
-        <td><a href="/views/question/echoDel.php?table=questions&idSuffix=questions&id=<? echo $questionInTheme['id_questions'] ?>">Удалить вопрос</a></td>
+        <td><a href="/del/echoDel.php?table=questions&idSuffix=questions&id=<? echo $questionInTheme['id_questions'] ?>">Удалить вопрос</a></td>
         <td><a href="">Скрыть вопрос</a></td>
         <td><a href="">Опубликовать вопрос</a></td>
         <td>
             <label>Автор:<? echo $questionInTheme['autor'] ?></label>
-            <form action="/views/question/updateQuestion.php">
+            <form action="/del/updateQuestion.php">
                 <input type='hidden' name="table" formmethod="get" value="questions" />
                 <input type='hidden' name="set" formmethod="get" value="autor" />
                 <input name="setValue" placeholder="Введите нового автора"><br />
@@ -57,7 +57,7 @@ $sthSelectThemes = DataBase::selectThemes('*', 'questions', 'theme_id', $_GET['i
             </form>
         </td>
         <td>
-            <form action="/views/question/updateQuestion.php">
+            <form action="/del/updateQuestion.php">
                 <input type='hidden' name="table" formmethod="get" value="questions" />
                 <input type='hidden' name="set" formmethod="get" value="question" />
                 <textarea name="setValue" title=""><? echo $questionInTheme['question']; ?></textarea><br />
@@ -67,7 +67,7 @@ $sthSelectThemes = DataBase::selectThemes('*', 'questions', 'theme_id', $_GET['i
             </form>
         </td>
         <td>
-            <form action="/views/question/moveQuestion.php">
+            <form action="/del/moveQuestion.php">
                 <select title="">
                     <? $sthAllTheme = DataBase::select('*', 'themes'); ?>
                     <? foreach ($sthAllTheme as $allThemeName) { ?>

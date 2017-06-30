@@ -13,16 +13,18 @@ class App
      * для получения пути до корневой директории всего проекта
      * @return string
      */
-    public static function getRoot()                            //static - разрешает обращение к методу без создания экземпляра класса
+    //static - разрешает обращение к методу без создания экземпляра класса
+    public static function getRoot()
     {
-        return __DIR__ . '/../';                               //Возвращает корневую директорию проекта, т.к. по умолчанию на сервере настроена web как корневая
+        //Возвращает корневую директорию проекта, т.к. по умолчанию на сервере настроена web как корневая
+        return __DIR__ . '/../';
     }
 
     public static function getConfig()
     {
         // См. getDb. По аналогии
         if (self::$config === null) {
-            self::$config = require(self::getRoot() . '/configs/main.php');
+            self::$config = require(self::getRoot() . 'configs/main.php');
         }
         return self::$config;
     }

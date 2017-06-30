@@ -1,7 +1,9 @@
 <?php
 
-// Контроллер админа
-class QuestionController extends Controller                                 //Контроллер для административной части сайта. SiteController наследует все св-ва и метода Controller
+/*
+ * Контроллер для административной части сайта. SiteController наследует все св-ва и метода Controller
+ */
+class QuestionController extends Controller
 {
     public function indexAction()
     {

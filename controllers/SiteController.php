@@ -1,23 +1,26 @@
 <?php
-
-// Контроллер пользователя
-class SiteController extends Controller {                       //Контроллер для пользовательской части сайта. SiteController наследует все св-ва и методы Controller
-
-    public function indexAction()                               //Функция вывода главной страницы
+/*
+ * Контроллер для пользовательской части сайта. SiteController наследует все св-ва и методы Controller
+ */
+class SiteController extends Controller {
+    //Функция вывода главной страницы
+    public function indexAction()
     {
-       $this->title = 'Главная страница';                       //Присваиваем title 'Главная страница'
-       $this->render('site/index');                             //Вызываем метод render() для главной страницы
+       //Присваиваем title 'Главная страница'
+       $this->title = 'Главная страница';
+       //Вызываем метод render() для главной страницы
+       $this->render('site/index');
     }
-
-    public function createQuestionAction()                      //Функция записи вновь созданного вопроса в БД
+    //Функция записи вновь созданного вопроса в БД
+    public function createQuestionAction()
     {
         //isset($_POST['...']);
         $pdo->execute('INSERT questions ....');
         //...
         $this->render('..');
     }
-
-    public function aboutAction()                               //Функция вывода страницы "Об авторе"
+    //Функция вывода страницы "Об авторе"
+    public function aboutAction()
     {
         $this->title = 'Об авторе';
         $this->render('site/about');

@@ -14,7 +14,7 @@
 <body>
 <a href="index.php?r=question/create">Задать вопрос</a><br /><br />
 <a href="index.php?r=question/login">Войти как администратор</a><br /><br />
-<a href="index.php?r=question/adminPanel">Админ панель (пока тут)</a>
+<a href="index.php?r=question/index">Админ панель (пока тут)</a>
 
 <header>
     <h1>FAQ</h1>
