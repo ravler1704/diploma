@@ -1,16 +1,17 @@
 <?php
-require_once __DIR__ . '/../../lib/database/DataBase.php';
-$sthT = DataBase::selectQuestionName($_GET['id']);
-$sthSelectThemes = DataBase::selectThemes('*', 'questions', 'theme_id', $_GET['id']);
+/**
+ * @var array $questions
+ * @var array $theme
+ * @var array $themeList
+ */
+
+use lib\App;
 
 ?>
 
-
-<? foreach ($sthT as $themeName) { ?>
-<h1>Вопросы в теме "<? echo $themeName['name'] ?>"</h1>
-<? } ?>
+<h1>Вопросы в теме "<?= $theme['name'] ?>"</h1>
 <br />
-<table border="1">
+<table class="table-bordered">
     <tr>
         <th>Вопрос</th>
         <th>Дата создания</th>
@@ -24,7 +25,7 @@ $sthSelectThemes = DataBase::selectThemes('*', 'questions', 'theme_id', $_GET['i
         <th>Редактирование текста вопроса</th>
         <th>Переместить в тему</th>
     </tr>
-    <? foreach ($sthSelectThemes as $questionInTheme) { ?>
+    <? foreach ($questions as $questionInTheme) { ?>
     <tr>
         <td><? echo $questionInTheme['question'] ?></td>
         <td><? echo $questionInTheme['date']; ?></td>
@@ -46,13 +47,10 @@ $sthSelectThemes = DataBase::selectThemes('*', 'questions', 'theme_id', $_GET['i
         <td><a href="">Скрыть вопрос</a></td>
         <td><a href="">Опубликовать вопрос</a></td>
         <td>
-            <label>Автор:<? echo $questionInTheme['autor'] ?></label>
-            <form action="/del/updateQuestion.php">
-                <input type='hidden' name="table" formmethod="get" value="questions" />
-                <input type='hidden' name="set" formmethod="get" value="autor" />
-                <input name="setValue" placeholder="Введите нового автора"><br />
-                <input type='hidden' name="idSuffix" formmethod="get" value="questions" />
-                <input type='hidden' name="id" formmethod="get" value="<? echo $questionInTheme['id'] ?>" />
+            <label>Автор:<? echo $questionInTheme['author'] ?></label>
+            <form action="<?= App::createUrl('question/updateAuthor', ['id' => App::getParam('id')]) ?>" method="post">
+                <input name="Data[author]" placeholder="Введите нового автора"><br />
+                <input type='hidden' name="Data[id]" value="<? echo $questionInTheme['id'] ?>" />
                 <button>Изменить автора</button>
             </form>
         </td>
@@ -67,12 +65,12 @@ $sthSelectThemes = DataBase::selectThemes('*', 'questions', 'theme_id', $_GET['i
             </form>
         </td>
         <td>
-            <form action="/del/moveQuestion.php">
-                <select title="">
-                    <? $sthAllTheme = DataBase::select('*', 'themes'); ?>
-                    <? foreach ($sthAllTheme as $allThemeName) { ?>
-                    <option>
-                        <? echo $allThemeName['name']; ?>
+            <form action="<?= App::createUrl('question/move', ['id' => App::getParam('id')]) ?>" method="post">
+                <input type="hidden" name="Data[id]"  value="<?= $questionInTheme['id'] ?>">
+                <select name="Data[theme_id]">
+                    <? foreach ($themeList as $id => $name) { ?>
+                    <option value="<?= $id ?>">
+                        <?= $name ?>
                     </option>
                     <? } ?>
                 </select>

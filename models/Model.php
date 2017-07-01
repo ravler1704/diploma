@@ -1,4 +1,7 @@
 <?php
+namespace models;
+
+use lib\App;
 
 abstract class Model
 {
@@ -6,17 +9,17 @@ abstract class Model
 
     public function insert(array $data)
     {
-        App::getDb()->insert($this->getTableName(), $data);
+        return App::getDb()->insert($this->getTableName(), $data);
     }
 
     public function update($data, array $condition = [])
     {
-        App::getDb()->update($this->getTableName(), $data, $condition);
+        return App::getDb()->update($this->getTableName(), $data, $condition);
     }
 
     public function select(array $condition = [])
     {
-        App::getDb()->select($this->getTableName(), $condition);
+        return App::getDb()->select($this->getTableName(), $condition);
     }
 
     public function delete(array $condition = [])
@@ -24,6 +27,14 @@ abstract class Model
         App::getDb()->delete($this->getTableName(), $condition);
     }
 
+
+    public function selectOne(array $condition = [])
+    {
+        $result =  App::getDb()->select($this->getTableName(), $condition);
+        if (isset($result[0])) {
+            return $result[0];
+        }
+    }
 
 
 

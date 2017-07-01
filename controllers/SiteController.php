@@ -1,4 +1,7 @@
 <?php
+namespace controllers;
+
+use lib\Controller;
 /*
  * Контроллер для пользовательской части сайта. SiteController наследует все св-ва и методы Controller
  */

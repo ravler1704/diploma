@@ -1,4 +1,8 @@
 <?php
+namespace lib\database;
+
+use PDOException;
+use PDO;
 
 /**
  * Класс для подключения к БД
@@ -32,7 +36,7 @@ class DataBase
     /**
      * @param $table
      * @param array $where
-     * @return PDOStatement
+     * @return array
      * Example
      * select('questions', ['author' => 'Make', '..' => '...'])
      * TODO: Можно уосвершенствовать функцию, чтобы еще была возможность указывать операцию: select('questions', [['>', 'author' => 'Make'], ...)
@@ -47,7 +51,7 @@ class DataBase
             $conditions = [];
             foreach ($where as $key => $value) {
                 $conditionParams[":$key"] = $value;
-                $conditions[] = "`$key` = :$value";
+                $conditions[] = "`$key` = :$key";
             }
             $sqlCondition = implode(', ', $conditions);
             // $sql = $sql . '...'
@@ -56,29 +60,27 @@ class DataBase
         }
 
         $sth = $this->db->prepare($sql);
-        //:name => 'Ivan', `age` => 12
         $sth->execute($conditionParams);
-        return $sth;
+        //:name => 'Ivan', `age` => 12
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
 
     }
 
     public function delete($table, array $where = [])
     {
-
-        $sql = "DELETE * FROM $table";
+        $sql = "DELETE FROM $table";
         $conditionParams = [];
         if (!empty($where)) {
             $conditions = [];
             foreach ($where as $key => $value) {
                 $conditionParams[":$key"] = $value;
-                $conditions[] = "`$key` = :$value";
+                $conditions[] = "`$key` = :$key";
             }
             $sqlCondition = implode(', ', $conditions);
             // $sql = $sql . '...'
             // `name` = :name, `age` = :age
             $sql .= " WHERE $sqlCondition";
         }
-
         $sth = $this->db->prepare($sql);
         //:name => 'Ivan', `age` => 12
         $sth->execute($conditionParams);
@@ -89,16 +91,15 @@ class DataBase
     public function update($table, array $set = [], array $where = [])
     {
         $sql = "UPDATE $table";
-
         /*
          * SET
          */
-        $conditionParamsSet = [];
+        $conditionParams = [];
 
         $conditionsSet = [];
         foreach ($set as $key => $value) {
-            $conditionParamsSet[":$key"] = $value;
-            $conditionsSet[] = "`$key` = :$value";
+            $conditionParams[":$key"] = $value;
+            $conditionsSet[] = "`$key` = :$key";
         }
         $sqlConditionSet = implode(', ', $conditionsSet);
         // $sql = $sql . '...'
@@ -108,12 +109,11 @@ class DataBase
         /*
          * WHERE
          */
-        $conditionParams = [];
         if (!empty($where)) {
             $conditions = [];
             foreach ($where as $key => $value) {
                 $conditionParams[":$key"] = $value;
-                $conditions[] = "`$key` = :$value";
+                $conditions[] = "`$key` = :$key";
             }
             $sqlCondition = implode(', ', $conditions);
             // $sql = $sql . '...'
@@ -121,6 +121,7 @@ class DataBase
             $sql .= " WHERE $sqlCondition";
         }
 
+        //var_dump($sql, $conditionParams); die;
         $sth = $this->db->prepare($sql);
         //:name => 'Ivan', `age` => 12
         $sth->execute($conditionParams);

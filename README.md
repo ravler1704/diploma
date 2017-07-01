@@ -77,3 +77,9 @@ QuestionController и  из папки question в отдельный контр
     status ENUM('published', 'unpublished', '....'),
     
     // INSERT ....(status) VALUES('published')
+    
+    
+    
+    http://diploma.loc/index.php?r=question/index
+    http://diploma.loc/index.php?r=question/delete
+    http://diploma.loc/index.php?r=question/create

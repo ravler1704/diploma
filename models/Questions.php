@@ -1,5 +1,7 @@
 <?php
-require_once App::getRoot() . 'models/Model.php';
+namespace models;
+
+use lib\App;
 
 class Questions extends Model
 {
@@ -12,14 +14,4 @@ class Questions extends Model
         // Делаем запрос в базу на удаления
         // App::getDb()->delete(...)
     }*/
-
-    public function delete(array $condition = [])
-    {
-        App::getDb()->delete($this->getTableName(), $condition);
-    }
-
-    public function select(array $condition = [])
-    {
-        return App::getDb()->select($this->getTableName(), $condition);
-    }
 }

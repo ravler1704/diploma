@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `questions` (
-  `id_questions` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `question` text,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `author` text,
@@ -41,7 +41,7 @@ CREATE TABLE `questions` (
 -- Дамп данных таблицы `questions`
 --
 
-INSERT INTO `questions` (`id_questions`, `question`, `date`, `author`, `email`, `answer`, `theme_id`, `status`) VALUES
+INSERT INTO `questions` (`id`, `question`, `date`, `author`, `email`, `answer`, `theme_id`, `status`) VALUES
 (1, 'Как установить твиг?333', '2017-06-24 15:19:17', '123', '', 'йцуке', 3, 'НЕ опубликовано'),
 (5, 'вопрос', '2017-06-24 21:11:28', 'admin', '', 'ууу', 3, 'НЕ опубликовано');
 
@@ -52,8 +52,8 @@ INSERT INTO `questions` (`id_questions`, `question`, `date`, `author`, `email`, 
 --
 
 CREATE TABLE `themes` (
-  `id_themes` int(11) NOT NULL,
-  `name_themes` text NOT NULL,
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL,
   `questions_all` int(11) NOT NULL DEFAULT '0',
   `questions_published` int(11) NOT NULL DEFAULT '0',
   `questions_unanswerd` int(11) NOT NULL DEFAULT '0'
@@ -63,7 +63,7 @@ CREATE TABLE `themes` (
 -- Дамп данных таблицы `themes`
 --
 
-INSERT INTO `themes` (`id_themes`, `name_themes`, `questions_all`, `questions_published`, `questions_unanswerd`) VALUES
+INSERT INTO `themes` (`id`, `name`, `questions_all`, `questions_published`, `questions_unanswerd`) VALUES
 (3, 'Nginx вебсервер', 0, 0, 0),
 (11, '555', 0, 0, 0);
 
@@ -74,16 +74,16 @@ INSERT INTO `themes` (`id_themes`, `name_themes`, `questions_all`, `questions_pu
 --
 
 CREATE TABLE `users` (
-  `id_users` int(11) NOT NULL,
-  `name_users` text NOT NULL,
-  `password_users` text NOT NULL
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `password` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id_users`, `name_users`, `password_users`) VALUES
+INSERT INTO `users` (`id`, `name`, `password`) VALUES
 (1, 'admin', '888');
 
 --
@@ -94,19 +94,19 @@ INSERT INTO `users` (`id_users`, `name_users`, `password_users`) VALUES
 -- Индексы таблицы `questions`
 --
 ALTER TABLE `questions`
-  ADD PRIMARY KEY (`id_questions`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `themes`
 --
 ALTER TABLE `themes`
-  ADD PRIMARY KEY (`id_themes`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id_users`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -116,17 +116,17 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id_questions` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT для таблицы `themes`
 --
 ALTER TABLE `themes`
-  MODIFY `id_themes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

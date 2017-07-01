@@ -452,3 +452,14 @@ header h1 {
   }
 }
 
+.table-bordered td,
+.table-bordered th
+{
+  border: 1px solid;
+  padding: 5px;
+}
+
+.table-bordered th {
+  font-weight: bold;
+}
+

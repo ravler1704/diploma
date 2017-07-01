@@ -1,4 +1,7 @@
 <?php
+namespace models;
+
+use lib\App;
 
 class Themes extends Model
 {
@@ -7,8 +10,13 @@ class Themes extends Model
         return 'themes';
     }
 
-    public function select(array $condition = [])
+    public function getList()
     {
-        return App::getDb()->select($this->getTableName(), $condition);
+        $result = [];
+        $themes = $this->select();
+        foreach ($themes as $theme) {
+            $result[$theme['id']] = $theme['name'];
+        }
+        return $result;
     }
 }

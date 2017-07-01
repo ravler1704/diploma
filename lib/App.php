@@ -1,4 +1,7 @@
 <?php
+namespace lib;
+
+use lib\database\DataBase;
 
 /**
  * Класс всего приложения
@@ -40,5 +43,62 @@ class App
         }
         // При повторном вызове текущего метода, просто возвращаем ранее инициализированный объект класса DataBase
         return self::$db;
+    }
+
+    public static function registerAutoload($class)
+    {
+        // \lib\database\DataBase
+        if (strpos($class, '\\') !== false) {
+            $path = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+            require_once self::getRoot() . $path . '.php';
+        }
+    }
+
+    public static function createUrl($route = null, array $params = [])
+    {
+        // $params = ['a' => 1, 'b' => 2];
+        // index.php?a=1&b=2
+        $url = 'index.php';
+        if (!empty($route)) {
+            // Помимо переданных параметров, мы еще должны добавить параметр r, например: r=site/create
+
+            // $x = ['a' => 1]
+            // $y = ['b' => 2]
+            // $z = array_merge($y, $x)
+            // $z == ['b' => 2, 'a' => 1]
+            $params = array_merge(['r' => $route], $params);
+        }
+        if (!empty($params)) {
+            // Склеиваем по стандарту URI, т.е. из массива получим такую строчку a=1&b=2
+            $strParams = http_build_query($params);
+
+            $url .= '?' . $strParams;
+        }
+        // index.php?r=site/index&a=1&b=2
+        return $url;
+    }
+
+    public static function getParam($name)
+    {
+        // Короче можно еще так сделать
+        // return isset($_GET[$name]) ? $_GET[$name] : null;
+
+        if (isset($_REQUEST[$name])) {
+            return $_REQUEST[$name];
+        } else {
+            return null;
+        }
+    }
+
+    public static function getParamGet($name)
+    {
+        // Короче можно еще так сделать
+        // return isset($_GET[$name]) ? $_GET[$name] : null;
+
+        if (isset($_GET[$name])) {
+            return $_GET[$name];
+        } else {
+            return null;
+        }
     }
 }

@@ -1,10 +1,12 @@
 <?php
+namespace lib;
 
 class View
 {
     //Возвращает полное содержимое файла $fileName. Примает переменную $fileName - имя файла с расширением.      $return = false (по умолчанию)        static - разрешает обращение к методу без создания экземпляра класса
-    public static function renderFile($fileName, $return = false)
+    public static function renderFile($fileName, array $data = [],  $return = false)
     {
+        extract($data);
         //включает буферизацию вывода
         ob_start();
         //Подключаем файл $fileName

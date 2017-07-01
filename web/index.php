@@ -1,9 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ . '/../lib/App.php';
-require_once __DIR__ . '/../lib/Controller.php';
-require_once __DIR__ . '/../controllers/SiteController.php';
-require_once __DIR__ . '/../controllers/QuestionController.php';
-require_once __DIR__ . '/../lib/View.php';
+spl_autoload_register('lib\App::registerAutoload');
 // require_once library/Twig.php
 
 
@@ -22,7 +23,7 @@ $actionName = $arr[1];
 
 // $c == 'SiteController'
 //Сохраняем в $c имя типа "SiteController"  ucfirst() - преобразует первый символ строки в верхний регистр
-$c = ucfirst($controllerName) . 'Controller';
+$c = 'controllers\\' . ucfirst($controllerName) . 'Controller';
 //Создаем новый объект класса "ucfirst($controllerName) . 'Controller'"  и сохраняем его в $controller
 $controller = new $c();
 // $a == 'indexAction'
