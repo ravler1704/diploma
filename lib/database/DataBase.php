@@ -11,7 +11,7 @@ use PDO;
  * $db->select(...)
  * $connection = $db->getConnection();
  */
-// TODO Привести к номральному виду комментарии
+// TODO Привести к номральному виду комментарии  ....DONE!
 class DataBase
 {
     private $db;

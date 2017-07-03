@@ -2,6 +2,7 @@
 namespace controllers;
 
 use lib\Controller;
+use models\Themes;
 /*
  * Контроллер для пользовательской части сайта. SiteController наследует все св-ва и методы Controller
  */
@@ -11,9 +12,19 @@ class SiteController extends Controller {
     {
        //Присваиваем title 'Главная страница'
        $this->title = 'Главная страница';
+
+       $themeModel = new Themes();
+       $themes = $themeModel->select();
+
        //Вызываем метод render() для главной страницы
-       $this->render('site/index');
+       $this->render('site/index', ['themes' => $themes]);
+
     }
+
+
+
+
+
     //Функция записи вновь созданного вопроса в БД
     public function createQuestionAction()
     {
