@@ -66,6 +66,30 @@ class DataBase
 
     }
 
+    public function count($table, array $where = [])
+    {
+
+        $sql = "SELECT COUNT * FROM $table";
+        $conditionParams = [];
+        if (!empty($where)) {
+            $conditions = [];
+            foreach ($where as $key => $value) {
+                $conditionParams[":$key"] = $value;
+                $conditions[] = "`$key` = :$key";
+            }
+            $sqlCondition = implode(', ', $conditions);
+            // $sql = $sql . '...'
+            // `name` = :name, `age` = :age
+            $sql .= " WHERE $sqlCondition";
+        }
+
+        $sth = $this->db->prepare($sql);
+        $sth->execute($conditionParams);
+        //:name => 'Ivan', `age` => 12
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
     public function delete($table, array $where = [])
     {
         $sql = "DELETE FROM $table";
@@ -148,5 +172,6 @@ class DataBase
         return $sth;
 
     }
+
 
 }

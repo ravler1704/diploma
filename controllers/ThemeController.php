@@ -2,6 +2,7 @@
 namespace controllers;
 
 use lib\Controller;
+use lib\App;
 use models\Themes;
 
 /*
@@ -20,7 +21,7 @@ class ThemeController extends Controller
         $this->render('theme/index', ['themes' => $themes]);
     }
 
-    public function indexDelete()
+    public function deleteAction()
     {
         $id = $this->getParam('id');
         // Исользовать модель Questions в которой будут происходить запросы на удаления
@@ -29,4 +30,29 @@ class ThemeController extends Controller
 
         $this->redirect('theme/index');
     }
+
+    public function insertThemeAction()
+    {
+        $model = new Themes();
+        //$x = $_POST['Data'];
+        // $x будет равен ['question' => '....' , 'id' => '...']
+
+        // $_REQUEST['Data']
+        $inputData = $this->getParam('Data');
+        $model->insert(['name' => $inputData['name']]);
+        $this->redirect('theme/index');
+        //$this->render('question/update');
+    }
+
+    public function countAction()
+    {
+        $model = new Themes();
+        $inputData = $this->getParam('Data');
+        $countAll = $model->count(['id' => $inputData['id']]);
+
+        return $countAll;
+    }
+
+
+
 }

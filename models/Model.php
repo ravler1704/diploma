@@ -36,6 +36,11 @@ abstract class Model
         }
     }
 
+    public function count(array $condition = [])
+    {
+        return App::getDb()->select($this->getTableName(), $condition);
+    }
+
 
 
     //TODO остальные операции ...  DONE!?

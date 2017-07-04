@@ -1,10 +1,11 @@
+
 <?php
 use lib\App;
 ?>
 
 <section class="cd-faq">
 
-    <ul class="cd-faq-categories">
+   <!-- <ul class="cd-faq-categories">
         <li><a class="selected" href="#basics">Basics</a></li>
         <li><a href="#mobile">Mobile</a></li>
         <li><a href="#account">Account</a></li>
@@ -15,15 +16,21 @@ use lib\App;
 
     <div class="cd-faq-items">
         <? foreach ($themes as $value) { ?>
+            <? if ($value['id'] != 0) { ?>
         <ul id="<? echo $value['id']; ?>" class="cd-faq-group">
             <li class="cd-faq-title"><h2><? echo $value['name']; ?></h2></li>
             <? foreach ($questions as $questionInTheme) { ?>
+                <? if ($questionInTheme['theme_id'] == $value['id']) { ?>
+                    <? if ($questionInTheme['status'] == 'Опубликовано') { ?>
             <li>
                 <a class="cd-faq-trigger" href="#<? echo $questionInTheme['id'] ?>"><? echo $questionInTheme['question'] ?></a>
                 <div class="cd-faq-content">
                     <p><? echo $questionInTheme['answer']; ?></p>
                 </div> <!-- cd-faq-content -->
             </li>
+            <? } ?>
+            <? } ?>
+            <? } ?>
             <? } ?>
 
         </ul> <!-- cd-faq-group -->

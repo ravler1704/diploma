@@ -2,8 +2,14 @@
 use lib\App;
 ?>
 
-<h1>Таблица администраторов</h1>
 
+<h1>Таблица администраторов</h1><br />
+<h2>Добавить администратора</h2>
+<form action="<?= App::createUrl('user/addAdmin') ?>" method="POST">
+    <input type='text' name="Data[name]" placeholder="Введите имя"/>
+    <input type='text' name="Data[password]" placeholder="Введите пароль"/>
+    <button type="submit">Добавить</button>
+</form><br />
 <table class="table-bordered">
     <tr>
         <th>Имя администратора</th>
@@ -14,14 +20,14 @@ use lib\App;
         <tr>
             <td><?= $value['name']; ?></td>
             <td>
-                <form action="/del/updatePassword.php">
-                    <input name="newPassword" formmethod="get" placeholder="Введите новый пароль" />
-                    <input type='hidden' name="userId" formmethod="get" value="<? echo $value['id']; ?>" />
-                    <button>Изменить</button>
-
+                <form action="<?= App::createUrl('user/updatePassword') ?>" method="POST">
+                    <input type='text' name="Data[password]" placeholder="Введите новый пароль" />
+                    <input type='hidden' name="Data[id]" value="<? echo $value['id']; ?>" />
+                    <button type="submit">Изменить</button>
                 </form>
+
             </td>
-            <td><a href="/del/echoDel.php?table=users&idSuffix=users&id=<? echo $value['id'] ?>">Удалить администратора</a></td>
+            <td><a href="<?= App::createUrl('user/delete', ['id' => $value['id']]) ?>">Удалить администратора</a></td>
         </tr>
     <? } ?>
 </table>

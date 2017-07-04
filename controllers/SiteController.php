@@ -3,6 +3,7 @@ namespace controllers;
 
 use lib\Controller;
 use models\Themes;
+use models\Questions;
 /*
  * Контроллер для пользовательской части сайта. SiteController наследует все св-ва и методы Controller
  */
@@ -16,8 +17,11 @@ class SiteController extends Controller {
        $themeModel = new Themes();
        $themes = $themeModel->select();
 
+        $questionModel = new Questions();
+        $questions = $questionModel->select();
+
        //Вызываем метод render() для главной страницы
-       $this->render('site/index', ['themes' => $themes]);
+       $this->render('site/index', ['themes' => $themes, 'questions' => $questions]);
 
     }
 

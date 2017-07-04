@@ -5,6 +5,7 @@ use lib\Controller;
 use models\Questions;
 use models\Themes;
 use models\Users;
+use lib\App;
 
 /**
  * Контроллер для административной части сайта. SiteController наследует все св-ва и метода Controller
@@ -21,7 +22,10 @@ class QuestionController extends Controller
         $this->render('question/index', ['questions' => $questions, 'users' => $users]);
     }
 
-    public function updateAction()
+
+
+    //задать вопрос
+    public function askQuestionAction()
     {
         $model = new Questions();
         //$x = $_POST['Data'];
@@ -29,8 +33,8 @@ class QuestionController extends Controller
 
         // $_REQUEST['Data']
         $inputData = $this->getParam('Data');
-        $model->update($inputData, ['id' => $inputData['id']]);
-        $this->redirect('question/index');
+        $model->insert(['author' => $inputData['author'], 'email' => $inputData['email'], 'question' => $inputData['question']]);
+        $this->redirect('site/index');
         //$this->render('question/update');
     }
 
@@ -47,6 +51,8 @@ class QuestionController extends Controller
         $this->render('question/create');
     }
 
+
+
     // Пример того что абстрактный метод напрямую использовать нельзя,
     // от абстрактного метода можно только унаследоваться другим классом
     public function someAction(){
@@ -62,6 +68,17 @@ class QuestionController extends Controller
         $model->delete(['id' => $id]);
 
         $this->redirect('question/index');
+    }
+
+    public function deleteQuestionInThemeAction()
+    {
+        $id = $this->getParam('id');
+        $currentThemeId = $this->getParam('theme_id');
+        // Исользовать модель Questions в которой будут происходить запросы на удаления
+        $model = new Questions();
+        $model->delete(['id' => $id]);
+
+        $this->redirect('question/theme', ['id' => $currentThemeId]);
     }
 
     public function loginAction()
@@ -97,7 +114,9 @@ class QuestionController extends Controller
         $model->update(['theme_id' => $inputData['theme_id']], ['id' => $inputData['id']]);
         $this->redirect('question/theme', ['id' => $currentThemeId]);
     }
-
+/*
+ * UPDATE
+ */
     public function updateAuthorAction()
     {
         $currentThemeId = $this->getParamGet('id');
@@ -107,5 +126,56 @@ class QuestionController extends Controller
         // Переходим обратно на список вопросв в текущей теме.
         $this->redirect('question/theme', ['id' => $currentThemeId]);
     }
+
+    public function updateAnswerAction()
+    {
+        //$currentThemeId = $this->getParamGet('id');
+        $model = new Questions();
+        $inputData = $this->getParam('Data');
+        $model->update(['answer' => $inputData['answer']], ['id' => $inputData['id']]);
+        // Переходим обратно на список вопросв в текущей теме.
+        $this->redirect('question/theme', ['id' => $inputData['theme_id']]);
+    }
+
+    public function updateAction()
+    {
+        $model = new Questions();
+        //$x = $_POST['Data'];
+        // $x будет равен ['question' => '....' , 'id' => '...']
+
+        // $_REQUEST['Data']
+        $inputData = $this->getParam('Data');
+        $model->update($inputData, ['id' => $inputData['id']]);
+        $this->redirect('question/index');
+        //$this->render('question/update');
+    }
+
+    public function updateInThemeAction()
+    {
+
+        $model = new Questions();
+        //$x = $_POST['Data'];
+        // $x будет равен ['question' => '....' , 'id' => '...']
+
+        // $_REQUEST['Data']
+        $inputData = $this->getParam('Data');
+        $model->update($inputData, ['id' => $inputData['id']]);
+        $this->redirect('question/theme', ['id' => $inputData['theme_id']]);
+    }
+
+    public function updateStatusAction()
+    {
+        //$currentThemeId = $this->getParamGet('id');
+        $model = new Questions();
+        $inputData = $this->getParam('Data');
+        if ($inputData['status'] == 'Не опубликовано') {
+            $model->update(['status' => 'Опубликовано'], ['id' => $inputData['id']]);
+        } else {
+            $model->update(['status' => 'Не опубликовано'], ['id' => $inputData['id']]);
+        }
+        $this->redirect('question/theme', ['id' => $inputData['theme_id']]);
+    }
+
+
 
 }

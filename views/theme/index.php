@@ -2,12 +2,15 @@
 use lib\App;
 ?>
 <h1>Список тем</h1>
-<form action="/del/createTheme.php">
+
+
+<form action="<?= App::createUrl('theme/insertTheme') ?>" method="POST">
     <label>Создание новой темы:</label>
-    <input name="themeName" placeholder="Введите название темы">
-    <input type='hidden' name="idSuffix" formmethod="get" value="themes" />
-    <button>Создать</button>
-</form>
+    <input type='text' name="Data[name]" placeholder="Введите название темы"/>
+    <button type="submit">Создать</button>
+</form><br />
+
+
 <br />
 <table class="table-bordered">
     <tr>
@@ -26,6 +29,11 @@ use lib\App;
             <td><? echo $value['questions_published']; ?></td>
             <td><? echo $value['questions_unanswerd']; ?></td>
             <td><a href="<?= App::createUrl('theme/delete', ['id' => $value['id']]) ?>">Удалить тему</a></td>
+            <td><?= App::createUrl('theme/count') ?></td>
         </tr>
     <? } ?>
 </table>
+
+
+
+
