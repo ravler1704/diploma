@@ -19,4 +19,18 @@ class Themes extends Model
         }
         return $result;
     }
+
+    public function getAllQuestionsCount($themeId)
+    {
+        return App::getDb()->count('questions', ['theme_id' => $themeId]);
+    }
+
+    public function getPublishedQuestionsCount($themeId)
+    {
+        return App::getDb()->count('questions', ['status' => 'Опубликовано', 'theme_id' => $themeId]);
+    }
+
+    public function getNoAnswerQuestionsCount($themeId) {
+        return App::getDb()->count('questions', ['theme_id' => $themeId, 'answer' => null]);
+    }
 }

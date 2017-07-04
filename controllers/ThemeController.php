@@ -18,7 +18,7 @@ class ThemeController extends Controller
         $themeModel = new Themes();
         $themes = $themeModel->select();
 
-        $this->render('theme/index', ['themes' => $themes]);
+        $this->render('theme/index', ['themes' => $themes, 'model' => $themeModel]);
     }
 
     public function deleteAction()

@@ -1,5 +1,9 @@
 <?php
 use lib\App;
+
+/**
+ * @var \models\Themes $model
+ */
 ?>
 <h1>Список тем</h1>
 
@@ -25,9 +29,9 @@ use lib\App;
         <tr>
             <td><? echo $value['name']; ?></td>
             <td><a href="<?= App::createUrl('question/theme', ['id' => $value['id']]) ?>">Вопросы в этой теме</a></td>
-            <td><? echo $value['questions_all']; ?></td>
-            <td><? echo $value['questions_published']; ?></td>
-            <td><? echo $value['questions_unanswerd']; ?></td>
+            <td><?= $model->getAllQuestionsCount($value['id']); ?></td>
+            <td><?= $model->getPublishedQuestionsCount($value['id']); ?></td>
+            <td><?= $model->getNoAnswerQuestionsCount($value['id']); ?></td>
             <td><a href="<?= App::createUrl('theme/delete', ['id' => $value['id']]) ?>">Удалить тему</a></td>
             <td><?= App::createUrl('theme/count') ?></td>
         </tr>
