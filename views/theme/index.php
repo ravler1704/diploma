@@ -33,7 +33,6 @@ use lib\App;
             <td><?= $model->getPublishedQuestionsCount($value['id']); ?></td>
             <td><?= $model->getNoAnswerQuestionsCount($value['id']); ?></td>
             <td><a href="<?= App::createUrl('theme/delete', ['id' => $value['id']]) ?>">Удалить тему</a></td>
-            <td><?= App::createUrl('theme/count') ?></td>
         </tr>
     <? } ?>
 </table>

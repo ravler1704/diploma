@@ -36,8 +36,8 @@ use lib\App;
                 <textarea name="Data[answer]" placeholder="Введите текст ответа"><? echo $questionInTheme['answer'] ?></textarea>
                 <input type='hidden' name="Data[theme_id]" value="<? echo $questionInTheme['theme_id'] ?>" />
                 <input type='hidden' name="Data[id]" value="<? echo $questionInTheme['id'] ?>" />
-                <button type="submit">Опубликовать ответ</button><br />
-                <button type="submit">Сохранить и скрыть ответ</button>
+                <button type="submit" name="Data[publishButton]">Опубликовать ответ</button><br />
+                <button type="submit" name="Data[saveButton]">Сохранить и скрыть ответ</button>
             </form>
 
 

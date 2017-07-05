@@ -33,7 +33,7 @@ class QuestionController extends Controller
 
         // $_REQUEST['Data']
         $inputData = $this->getParam('Data');
-        $model->insert(['author' => $inputData['author'], 'email' => $inputData['email'], 'question' => $inputData['question']]);
+        $model->insert(['author' => $inputData['author'], 'email' => $inputData['email'], 'question' => $inputData['question'], 'theme_id' => $inputData['theme_id']]);
         $this->redirect('site/index');
         //$this->render('question/update');
     }
@@ -47,8 +47,9 @@ class QuestionController extends Controller
             // Переход на index.php?r=question/index
             $this->redirect('question/index');
         }
-
-        $this->render('question/create');
+        $modelTheme = new Themes();
+        $themeList = $modelTheme->getList();
+        $this->render('question/create', ['themeList' => $themeList]);
     }
 
 
@@ -129,12 +130,19 @@ class QuestionController extends Controller
 
     public function updateAnswerAction()
     {
-        //$currentThemeId = $this->getParamGet('id');
-        $model = new Questions();
-        $inputData = $this->getParam('Data');
-        $model->update(['answer' => $inputData['answer']], ['id' => $inputData['id']]);
-        // Переходим обратно на список вопросв в текущей теме.
-        $this->redirect('question/theme', ['id' => $inputData['theme_id']]);
+
+            //$currentThemeId = $this->getParamGet('id');
+            $model = new Questions();
+            $inputData = $this->getParam('Data');
+        if (isset($inputData['publishButton'])) {
+            $model->update(['answer' => $inputData['answer'], 'status' => 'Опубликовано'], ['id' => $inputData['id']]);
+            // Переходим обратно на список вопросв в текущей теме.
+        } else if (isset($inputData['saveButton'])) {
+            $model->update(['answer' => $inputData['answer'], 'status' => 'Не опубликовано'], ['id' => $inputData['id']]);
+        }
+
+            $this->redirect('question/theme', ['id' => $inputData['theme_id']]);
+
     }
 
     public function updateAction()
