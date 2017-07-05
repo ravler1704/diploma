@@ -7,6 +7,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+session_start();
 
 require_once __DIR__ . '/../lib/App.php';
 spl_autoload_register('lib\App::registerAutoload');
@@ -30,10 +31,23 @@ $actionName = $arr[1];
 //Сохраняем в $c имя типа "SiteController"  ucfirst() - преобразует первый символ строки в верхний регистр
 $c = 'controllers\\' . ucfirst($controllerName) . 'Controller';
 //Создаем новый объект класса "ucfirst($controllerName) . 'Controller'"  и сохраняем его в $controller
+/** @var \lib\Controller $controller */
 $controller = new $c();
 // $a == 'indexAction'
 //Сохраняем в $a имя типа "indexAction"
 $a = $actionName . 'Action';
+
+$route = $controllerName . '/' . $actionName;
+
+$allowedUnregisteredRoutes = [
+    'auth/login',
+    'site/index',
+    'question/create'
+];
+
+if (!\lib\App::getUser() && !in_array($route, $allowedUnregisteredRoutes)) {
+    $controller->redirect('auth/login');
+}
 //Выводим содержимое главной страницы (Вызываем метод типа "indexAction"  в класса типа "SiteController")
 $controller->$a();
 //$controller->render('...');                                                 //???????

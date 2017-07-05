@@ -101,4 +101,16 @@ class App
             return null;
         }
     }
+
+    /**
+     * Возвращает данные авторизованного пользователя
+     * @return null
+     */
+    public static function getUser()
+    {
+        if (!empty($_SESSION['user'])) {
+            return $_SESSION['user'];
+        }
+        return null;
+    }
 }

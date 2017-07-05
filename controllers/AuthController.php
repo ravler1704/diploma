@@ -1,6 +1,7 @@
 <?php
 namespace controllers;
 
+use lib\App;
 use models\Users;
 use lib\Controller;
 
@@ -24,26 +25,28 @@ class AuthController extends Controller
 
     public function loginAction()
     {
-
-
-
+        if (App::getUser()) {
+            $this->redirect('question/index');
+        }
         //$users = getUsersAction();
         $userModel = new Users();
         $inputData = $this->getParam('Data');
-        $users = $userModel->select();
-        foreach ($users as $user) {
-            if ($user['name'] == $inputData['name'] && $user['password'] == $inputData['password']) {
-                unset($user['password']);
-                $_SESSION['user'] = $user;
-                $_SESSION['flag'] = 'admin';
-                $this->redirect('question/index');
+        $errors = [];
+        if ($inputData && !empty($inputData['name'])) {
+            $users = $userModel->select(['name' => $inputData['name']]);
+            foreach ($users as $user) {
+                if ($user['password'] == $inputData['password']) {
+                    unset($user['password']);
+                    $_SESSION['user'] = $user;
+                    $this->redirect('question/index');
+                } else {
+                    $errors[] = 'Неверный логин или пароль';
+                }
 
-                return true;
             }
         }
-        return false;
+        $this->render('auth/login', ['errors' => $errors]);
     }
-
 
 
     public function getLoggedUserDataAction()
@@ -87,8 +90,10 @@ class AuthController extends Controller
 
     public function logoutAction()
     {
-        session_destroy();
-        locationAction('index');
+        if (App::getUser()) {
+            session_destroy();
+        }
+        $this->redirect('auth/login');
     }
 
 }

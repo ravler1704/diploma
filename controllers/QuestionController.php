@@ -82,11 +82,6 @@ class QuestionController extends Controller
         $this->redirect('question/theme', ['id' => $currentThemeId]);
     }
 
-    public function loginAction()
-    {
-        $this->render('question/login');
-    }
-
     public function adminPanelAction()
     {
         $this->render('question/adminPanel');

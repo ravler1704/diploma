@@ -12,10 +12,18 @@
     <title>FAQ</title>
 </head>
 <body>
-<a href="index.php?r=question/create">Задать вопрос</a><br /><br />
-<a href="index.php?r=question/login">Войти как администратор</a><br /><br />
-<a href="index.php?r=question/index">Админ панель (пока тут)</a><br /><br />
-<a href="index.php?r=theme/index">Список тем</a>
+
+<a href="index.php?r=question/create">Главная</a><br />
+<a href="index.php?r=question/create">Задать вопрос</a><br />
+<? if (!\lib\App::getUser()): ?>
+<a href="index.php?r=auth/login">Войти как администратор</a><br />
+<? else: ?>
+<a href="index.php?r=question/index">Админ панель (пока тут)</a><br />
+<a href="index.php?r=theme/index">Список тем</a><br />
+<a href="index.php?r=auth/logout">Выйти</a><br /><br />
+<? endif; ?>
+
+
 
 
 <header>
