@@ -1,41 +1,52 @@
 <?php
 namespace controllers;
 
+use models\Users;
 use lib\Controller;
 
 
-/*
- *
- */
-class AuthController extends Controller {
+class AuthController extends Controller
+{
 
+    /*public function getUsersAction()
+    {
+        //$path = __DIR__ . '/data/users.json';
+        //$fileData = file_get_contents($path);
+        //$data = json_decode($fileData, true);
+        $userModel = new Users();
+        $data = $userModel->select();
 
-    public function addAdminAction()
+        if (!$data) {
+            return array();
+        }
+        return $data;
+    }*/
+
+    public function loginAction()
     {
 
-    }
 
 
-    public function login($login, $password)
-    {
-        $users = getUsers();
+        //$users = getUsersAction();
+        $userModel = new Users();
+        $inputData = $this->getParam('Data');
+        $users = $userModel->select();
         foreach ($users as $user) {
-            if ($user['login'] == $login && $user['password'] == getPassword($password)) {
+            if ($user['name'] == $inputData['name'] && $user['password'] == $inputData['password']) {
                 unset($user['password']);
                 $_SESSION['user'] = $user;
                 $_SESSION['flag'] = 'admin';
+                $this->redirect('question/index');
+
                 return true;
             }
         }
         return false;
     }
 
-    public function getPassword($password)
-    {
-        return $password;
-    }
 
-    public function getLoggedUserData()
+
+    public function getLoggedUserDataAction()
     {
         if (empty($_SESSION['user'])) {
             return null;
@@ -43,52 +54,41 @@ class AuthController extends Controller {
         return $_SESSION['user'];
     }
 
-    public function isAuthorized()
+    public function isAuthorizedAction()
     {
         return getLoggedUserData() !== null;
     }
 
-    public function getUsers()
+    /*
+    public function getUserNameAction()
     {
-        $path = __DIR__ . '/data/users.json';
-        $fileData = file_get_contents($path);
-        $data = json_decode($fileData, true);
-        if (!$data) {
-            return array();
-        }
-        return $data;
-    }
-
-    public function getUserName()
-    {
-        if (is_string($_SESSION['user'])){
+        if (is_string($_SESSION['user'])) {
             return $_SESSION['user'];
         } else {
             return $_SESSION['user']['name'];
         }
-    }
+    }*/
 
-    public function isPOST()
+    public function isPOSTAction()
     {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 
-    public function getParam($name)
+    public function getParamAction($name)
     {
         return filter_input(INPUT_POST, $name);
     }
 
-    public function location($path)
+    public function locationAction($path)
     {
         header("Location: $path.php");
         die;
     }
 
-    public function logout()
+    public function logoutAction()
     {
         session_destroy();
-        location('index');
+        locationAction('index');
     }
-
 
 }

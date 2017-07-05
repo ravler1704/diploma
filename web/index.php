@@ -1,4 +1,9 @@
 <?php
+
+// добавить в index.php если юзер не авторизован не выполнять никаких действий кроме AuthController::login
+
+
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
