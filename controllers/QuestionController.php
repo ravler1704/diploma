@@ -2,6 +2,7 @@
 namespace controllers;
 
 use lib\Controller;
+use lib\database\DataBase;
 use models\Questions;
 use models\Themes;
 use models\Users;
@@ -12,16 +13,17 @@ use lib\App;
  */
 class QuestionController extends Controller
 {
+
     public function indexAction()
     {
         $questionModel = new Questions();
-        $questions = $questionModel->select();
+        $questions = $questionModel->select(['answer' => NULL]);
+
 
         $userModel = new Users();
         $users = $userModel->select();
         $this->render('question/index', ['questions' => $questions, 'users' => $users]);
     }
-
 
 
     //задать вопрос

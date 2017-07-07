@@ -10,7 +10,6 @@ class Questions extends Model
         return 'questions';
     }
 
-
    /* public function delete($id){
         // Делаем запрос в базу на удаления
         // App::getDb()->delete(...)

@@ -49,6 +49,15 @@ class AuthController extends Controller
     }
 
 
+
+
+
+
+
+
+
+
+
     public function getLoggedUserDataAction()
     {
         if (empty($_SESSION['user'])) {

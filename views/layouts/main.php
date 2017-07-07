@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<a href="index.php?r=question/create">Главная</a><br />
+<a href="index.php">Главная</a><br />
 <a href="index.php?r=question/create">Задать вопрос</a><br />
 <? if (!\lib\App::getUser()): ?>
 <a href="index.php?r=auth/login">Войти как администратор</a><br />

@@ -50,14 +50,28 @@ class DataBase
         if (!empty($where)) {
             $conditions = [];
             foreach ($where as $key => $value) {
-                $conditionParams[":$key"] = $value;
-                $conditions[] = "`$key` = :$key";
+                if (is_null($value)) {
+                    $conditions[] = "(`$key` IS NULL OR  `$key` = '')";
+                } else {
+                    $conditionParams[":$key"] = $value;
+                    $conditions[] = "`$key` = :$key";
+                }
+
+
+
+
+
+
+                //$conditionParams[":$key"] = $value;
+               // $conditions[] = "`$key` = :$key";
             }
             $sqlCondition = implode(', ', $conditions);
             // $sql = $sql . '...'
             // `name` = :name, `age` = :age
             $sql .= " WHERE $sqlCondition";
         }
+
+
 
         $sth = $this->db->prepare($sql);
         $sth->execute($conditionParams);
