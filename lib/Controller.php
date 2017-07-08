@@ -23,6 +23,18 @@ class Controller {
 
         //Подключаем файл шаблона (слоя), с именем, соответствующим имени свойства в конкретном объекте (по умолчанию это .../views/layouts/main.php)
         require App::getRoot() . 'views/layouts/' . $this->layout . '.php';
+
+        //twig
+        /*
+        $loader = new Twig_Loader_Filesystem(App::getRoot() . 'web/index.php');
+        $twig = new Twig_Environment($loader, array(
+            //'cache' => '/path/to/compilation_cache',
+        ));
+
+        $template = $twig->load($view);
+        $template->display(array( $vars ));
+        */
+        //twig
     }
 
     public function redirect($to = null, array $params = []) {
