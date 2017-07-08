@@ -1,15 +1,12 @@
 <?php
-
-// добавить в index.php если юзер не авторизован не выполнять никаких действий кроме AuthController::login
-
-
-
+session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-session_start();
+require_once __DIR__ . '/../vendor/autoload.php';
 
 require_once __DIR__ . '/../lib/App.php';
+\lib\App::initTwig(\lib\App::getRoot() . 'views');
 spl_autoload_register('lib\App::registerAutoload');
 // require_once library/Twig.php
 

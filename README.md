@@ -83,3 +83,16 @@ QuestionController и  из папки question в отдельный контр
     http://diploma.loc/index.php?r=question/index
     http://diploma.loc/index.php?r=question/delete
     http://diploma.loc/index.php?r=question/create
+    
+    
+Удалять существующие темы и все вопросы в них.    
+```php 
+$themeId = 2; 
+
+$t = new Themes();
+$t->delete(['id' => $themeId]);
+
+$q = new Questions();
+$q->delete(['theme_id' => $themeId]);
+```
+

@@ -11,6 +11,7 @@ class App
 {
     private static $config;
     private static $db;
+    private static $twig;
 
     /**
      * для получения пути до корневой директории всего проекта
@@ -113,4 +114,35 @@ class App
         }
         return null;
     }
+
+    public static function initTwig($path)
+    {
+        $loader = new \Twig_Loader_Filesystem($path);
+        $twig = new \Twig_Environment($loader, [
+            //'cache' => '/path/to/compilation_cache',
+        ]);
+
+        $fnCreateUrl = function ($route = null, $params = []) {
+            return App::createUrl($route, $params);
+        };
+        $function = new \Twig_Function('get_url', $fnCreateUrl);
+        $twig->addFunction($function);
+
+        $function = new \Twig_Function('get_user', function () {
+            return \lib\App::getUser();
+        });
+        $twig->addFunction($function);
+
+        self::$twig = $twig;
+    }
+
+    /**
+     *
+     * @return \Twig_Environment
+     */
+    public static function getTwig()
+    {
+        return self::$twig;
+    }
+
 }

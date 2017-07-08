@@ -1,8 +1,3 @@
-<?
-use lib\App;
-?>
-
-
 <h1>Таблица администраторов</h1><br />
 <h2>Добавить администратора</h2>
 <form action="<?= App::createUrl('user/addAdmin') ?>" method="POST">

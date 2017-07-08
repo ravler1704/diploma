@@ -1,0 +1,29 @@
+{% extends "layouts/main.twig" %}
+
+{% block content %}
+    <section class="cd-faq">
+        <div class="cd-faq-items">
+            {% for value in themes %}
+                {% if value['id'] != 0 %}
+                    <ul id="{{ value['id'] }}" class="cd-faq-group">
+                    <li class="cd-faq-title"><h2>{{ value['name'] }}</h2></li>
+                    {% for questionInTheme in questions %}
+                        {% if questionInTheme['theme_id'] == value['id'] and questionInTheme['status'] == 'Опубликовано' %}
+                            <li>
+                                <a class="cd-faq-trigger"
+                                   href="#{{ questionInTheme['id'] }}">{{ questionInTheme['question'] }}</a>
+                                <div class="cd-faq-content">
+                                    <p>{{ questionInTheme['answer'] }}</p>
+                                </div> <!-- cd-faq-content -->
+                            </li>
+                        {% endif %}
+
+                    {% endfor %}
+                {% endif %}
+                </ul>
+            {% endfor %}
+
+        </div> <!-- cd-faq-items -->
+        <a href="#0" class="cd-close-panel">Close</a>
+    </section> <!-- cd-faq -->
+{% endblock %}
