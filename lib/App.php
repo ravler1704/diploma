@@ -131,6 +131,48 @@ class App
         $function = new \Twig_Function('get_user', function () {
             return \lib\App::getUser();
         });
+
+
+
+
+        $getParamId = function () {
+            return App::getParamGet('id');
+        };
+        $functionGPI = new \Twig_Function('get_ParamId', $getParamId);
+        $twig->addFunction($functionGPI);
+
+
+
+
+        $getAllQuestionsCount = function ($themeId = []) {
+          //return $params;
+            return App::getDb()->count('questions', ['theme_id' => $themeId]);
+        };
+        $functionAQC = new \Twig_Function('get_AllQuestionsCount', $getAllQuestionsCount);
+        $twig->addFunction($functionAQC);
+
+        $getPublishedQuestionsCount = function ($themeId = []) {
+            //return $params;
+            return App::getDb()->count('questions', ['status' => 'Опубликовано', 'theme_id' => $themeId]);
+        };
+        $functionPQC = new \Twig_Function('get_PublishedQuestionsCount', $getPublishedQuestionsCount);
+        $twig->addFunction($functionPQC);
+
+        $getNoAnswerQuestionsCount = function ($themeId = []) {
+            //return $params;
+            return App::getDb()->count('questions', ['theme_id' => $themeId, 'answer' => null]);
+        };
+        $functionNAC = new \Twig_Function('get_NoAnswerQuestionsCount', $getNoAnswerQuestionsCount);
+        $twig->addFunction($functionNAC);
+
+
+
+
+
+
+
+
+
         $twig->addFunction($function);
 
         self::$twig = $twig;

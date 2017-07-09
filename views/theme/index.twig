@@ -1,0 +1,47 @@
+{% extends "layouts/main.twig" %}
+
+{% block content %}
+
+<h1>Список тем</h1>
+
+<form action="{{ get_url('theme/insertTheme') }}" method="POST">
+{#<form action="<?= App::createUrl('theme/insertTheme') ?>" method="POST">#}
+    <label>Создание новой темы:</label>
+    <input type='text' name="Data[name]" placeholder="Введите название темы"/>
+    <button type="submit">Создать</button>
+</form><br />
+
+
+<br />
+<table class="table-bordered">
+    <tr>
+        <th>Название темы</th>
+        <th>Вопросы в теме</th>
+        <th>Всего вопросов в теме</th>
+        <th>Опубликованно вопросов</th>
+        <th>Вопросов без ответа</th>
+        <th>Удаление темы</th>
+    </tr>
+    {% for value in themes %}
+    {#<? foreach ($themes as $value) { ?>#}
+        <tr>
+            <td>{{ value['name'] }}</td>
+            {#<td><? echo $value['name']; ?></td>#}
+            <td><a href="{{ get_url('question/theme', { id : value['id'] }) }}">Вопросы в этой теме</a></td>
+            {#<td><a href="<?= App::createUrl('question/theme', ['id' => $value['id']]) ?>">Вопросы в этой теме</a></td>#}
+
+            <td>{{ get_AllQuestionsCount(value['id']) }}</td>
+            <td>{{ get_PublishedQuestionsCount(value['id']) }}</td>
+            <td>{{ get_NoAnswerQuestionsCount(value['id']) }}</td>
+            {#<td><?= $model->getAllQuestionsCount($value['id']); ?></td>#}
+            {#<td><?= $model->getPublishedQuestionsCount($value['id']); ?></td>#}
+            {#<td><?= $model->getNoAnswerQuestionsCount($value['id']); ?></td>#}
+            <td><a href="{{ get_url('theme/deleteThemeAndQuestions', { id : value['id'], theme_id : value['theme_id'] }) }}">Удалить тему</a></td>
+            {#<td><a href="<?= App::createUrl('theme/delete', ['id' => $value['id']]) ?>">Удалить тему</a></td>#}
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
+
+

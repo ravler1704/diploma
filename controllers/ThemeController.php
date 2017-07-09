@@ -3,7 +3,11 @@ namespace controllers;
 
 use lib\Controller;
 use lib\App;
+use models\Questions;
 use models\Themes;
+
+
+
 
 /*
  * Контроллер для административной части сайта. SiteController наследует все св-ва и метода Controller
@@ -19,6 +23,7 @@ class ThemeController extends Controller
         $themes = $themeModel->select();
 
         $this->render('theme/index', ['themes' => $themes, 'model' => $themeModel]);
+
     }
 
     public function deleteAction()
@@ -29,7 +34,24 @@ class ThemeController extends Controller
         $model->delete(['id' => $id]);
 
         $this->redirect('theme/index');
+
     }
+
+    public function deleteThemeAndQuestionsAction()
+    {
+        $id = $this->getParam('id');
+        // Исользовать модель Questions в которой будут происходить запросы на удаления
+        $themeModel = new Themes();
+        $themeModel->delete(['id' => $id]);
+
+        $questionModel = new Questions();
+        $questionModel->delete(['theme_id' => $id]);
+
+
+        $this->redirect('theme/index');
+
+    }
+
 
     public function insertThemeAction()
     {
