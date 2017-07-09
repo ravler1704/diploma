@@ -6,29 +6,17 @@ use models\Users;
 use lib\Controller;
 
 
+/**
+ * Контроллер отвечающий за авторизацию.
+ */
 class AuthController extends Controller
 {
-
-    /*public function getUsersAction()
-    {
-        //$path = __DIR__ . '/data/users.json';
-        //$fileData = file_get_contents($path);
-        //$data = json_decode($fileData, true);
-        $userModel = new Users();
-        $data = $userModel->select();
-
-        if (!$data) {
-            return array();
-        }
-        return $data;
-    }*/
 
     public function loginAction()
     {
         if (App::getUser()) {
             $this->redirect('question/index');
         }
-        //$users = getUsersAction();
         $userModel = new Users();
         $inputData = $this->getParam('Data');
         $errors = [];
@@ -42,21 +30,10 @@ class AuthController extends Controller
                 } else {
                     $errors[] = 'Неверный логин или пароль';
                 }
-
             }
         }
         $this->render('auth/login', ['errors' => $errors]);
     }
-
-
-
-
-
-
-
-
-
-
 
     public function getLoggedUserDataAction()
     {
@@ -64,37 +41,6 @@ class AuthController extends Controller
             return null;
         }
         return $_SESSION['user'];
-    }
-
-    public function isAuthorizedAction()
-    {
-        return getLoggedUserData() !== null;
-    }
-
-    /*
-    public function getUserNameAction()
-    {
-        if (is_string($_SESSION['user'])) {
-            return $_SESSION['user'];
-        } else {
-            return $_SESSION['user']['name'];
-        }
-    }*/
-
-    public function isPOSTAction()
-    {
-        return $_SERVER['REQUEST_METHOD'] == 'POST';
-    }
-
-    public function getParamAction($name)
-    {
-        return filter_input(INPUT_POST, $name);
-    }
-
-    public function locationAction($path)
-    {
-        header("Location: $path.php");
-        die;
     }
 
     public function logoutAction()

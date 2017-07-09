@@ -2,20 +2,15 @@
 namespace controllers;
 
 use lib\Controller;
-use lib\App;
 use models\Questions;
 use models\Themes;
 
-
-
-
 /*
- * Контроллер для административной части сайта. SiteController наследует все св-ва и метода Controller
+ * Контроллер для операций с темами
  */
-
 class ThemeController extends Controller
 {
-    // Тут будут экшены по созданию обновлению .... тем вопросов.
+    // Экшены по созданию обновлению .... тем вопросов:
 
     public function indexAction()
     {
@@ -23,33 +18,27 @@ class ThemeController extends Controller
         $themes = $themeModel->select();
 
         $this->render('theme/index', ['themes' => $themes, 'model' => $themeModel]);
-
     }
 
     public function deleteAction()
     {
         $id = $this->getParam('id');
-        // Исользовать модель Questions в которой будут происходить запросы на удаления
         $model = new Themes();
         $model->delete(['id' => $id]);
 
         $this->redirect('theme/index');
-
     }
 
     public function deleteThemeAndQuestionsAction()
     {
         $id = $this->getParam('id');
-        // Исользовать модель Questions в которой будут происходить запросы на удаления
         $themeModel = new Themes();
         $themeModel->delete(['id' => $id]);
 
         $questionModel = new Questions();
         $questionModel->delete(['theme_id' => $id]);
 
-
         $this->redirect('theme/index');
-
     }
 
 
@@ -61,9 +50,9 @@ class ThemeController extends Controller
 
         // $_REQUEST['Data']
         $inputData = $this->getParam('Data');
+
         $model->insert(['name' => $inputData['name']]);
         $this->redirect('theme/index');
-        //$this->render('question/update');
     }
 
     public function countAction()
@@ -74,7 +63,5 @@ class ThemeController extends Controller
 
         return $countAll;
     }
-
-
 
 }

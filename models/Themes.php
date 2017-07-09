@@ -33,4 +33,5 @@ class Themes extends Model
     public function getNoAnswerQuestionsCount($themeId) {
         return App::getDb()->count('questions', ['theme_id' => $themeId, 'answer' => null]);
     }
+
 }

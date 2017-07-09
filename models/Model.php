@@ -27,7 +27,6 @@ abstract class Model
         App::getDb()->delete($this->getTableName(), $condition);
     }
 
-
     public function selectOne(array $condition = [])
     {
         $result =  App::getDb()->select($this->getTableName(), $condition);
@@ -41,7 +40,4 @@ abstract class Model
         return App::getDb()->select($this->getTableName(), $condition);
     }
 
-
-
-    //TODO остальные операции ...  DONE!?
 }

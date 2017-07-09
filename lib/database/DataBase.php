@@ -11,7 +11,6 @@ use PDO;
  * $db->select(...)
  * $connection = $db->getConnection();
  */
-// TODO Привести к номральному виду комментарии  ....DONE!
 class DataBase
 {
     private $db;
@@ -39,12 +38,10 @@ class DataBase
      * @return array
      * Example
      * select('questions', ['author' => 'Make', '..' => '...'])
-     * TODO: Можно уосвершенствовать функцию, чтобы еще была возможность указывать операцию: select('questions', [['>', 'author' => 'Make'], ...)
      */
 
     public function select($table, array $where = [])
     {
-
         $sql = "SELECT * FROM $table";
         $conditionParams = [];
         if (!empty($where)) {
@@ -56,14 +53,8 @@ class DataBase
                     $conditionParams[":$key"] = $value;
                     $conditions[] = "`$key` = :$key";
                 }
-
-
-
-
-
-
                 //$conditionParams[":$key"] = $value;
-               // $conditions[] = "`$key` = :$key";
+                // $conditions[] = "`$key` = :$key";
             }
             $sqlCondition = implode(', ', $conditions);
             // $sql = $sql . '...'
@@ -71,13 +62,11 @@ class DataBase
             $sql .= " WHERE $sqlCondition";
         }
 
-
-
         $sth = $this->db->prepare($sql);
         $sth->execute($conditionParams);
         //:name => 'Ivan', `age` => 12
-        return $sth->fetchAll(PDO::FETCH_ASSOC);
 
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function count($table, array $where = [])
@@ -93,7 +82,6 @@ class DataBase
                     $conditionParams[":$key"] = $value;
                     $conditions[] = "`$key` = :$key";
                 }
-
             }
             $sqlCondition = implode(' AND ', $conditions);
             // $sql = $sql . '...'
@@ -105,7 +93,7 @@ class DataBase
         $sth->execute($conditionParams);
         //:name => 'Ivan', `age` => 12
         $result = $sth->fetch(PDO::FETCH_ASSOC);
-        //var_dump($result, $sql, $conditionParams); die;
+
         return $result['count'];
     }
 
@@ -127,8 +115,8 @@ class DataBase
         $sth = $this->db->prepare($sql);
         //:name => 'Ivan', `age` => 12
         $sth->execute($conditionParams);
-        return $sth;
 
+        return $sth;
     }
 
     public function update($table, array $set = [], array $where = [])
@@ -138,7 +126,6 @@ class DataBase
          * SET
          */
         $conditionParams = [];
-
         $conditionsSet = [];
         foreach ($set as $key => $value) {
             $conditionParams[":$key"] = $value;
@@ -148,7 +135,6 @@ class DataBase
         // $sql = $sql . '...'
         // `name` = :name, `age` = :age
         $sql .= " SET $sqlConditionSet";
-
         /*
          * WHERE
          */
@@ -164,10 +150,10 @@ class DataBase
             $sql .= " WHERE $sqlCondition";
         }
 
-        //var_dump($sql, $conditionParams); die;
         $sth = $this->db->prepare($sql);
         //:name => 'Ivan', `age` => 12
         $sth->execute($conditionParams);
+
         return $sth;
     }
 
@@ -183,14 +169,12 @@ class DataBase
         }
         $sqlColumns = implode(', ', $columns);
         $sqlColumnsVal = implode(', ', $columnsVal);
-
         // INSERT INTO `table` (`x1`, `x2`) VALUES(:x1, :x2)
         $sth = $this->getConnection()->prepare("INSERT INTO `$table`($sqlColumns) VALUES ($sqlColumnsVal)");
         // Указываем что вместо плейсхолдеров :x1, x2 подставляем реальные значения
         $sth->execute($values);
+
         return $sth;
-
     }
-
 
 }

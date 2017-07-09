@@ -2,14 +2,13 @@
 namespace controllers;
 
 use lib\Controller;
-use lib\database\DataBase;
 use models\Questions;
 use models\Themes;
 use models\Users;
 use lib\App;
 
 /**
- * Контроллер для административной части сайта. SiteController наследует все св-ва и метода Controller
+ * Контроллер для операций с вопросами
  */
 class QuestionController extends Controller
 {
@@ -19,48 +18,41 @@ class QuestionController extends Controller
         $questionModel = new Questions();
         $questions = $questionModel->select(['answer' => NULL]);
 
-
         $userModel = new Users();
         $users = $userModel->select();
+
         $this->render('question/index', ['questions' => $questions, 'users' => $users]);
     }
 
 
-    //задать вопрос
+    //Задать вопрос
     public function askQuestionAction()
     {
         $model = new Questions();
         //$x = $_POST['Data'];
-        // $x будет равен ['question' => '....' , 'id' => '...']
+        //$x будет равен ['question' => '....' , 'id' => '...']
 
         // $_REQUEST['Data']
         $inputData = $this->getParam('Data');
         $model->insert(['author' => $inputData['author'], 'email' => $inputData['email'], 'question' => $inputData['question'], 'theme_id' => $inputData['theme_id']]);
         $this->redirect('site/index');
-        //$this->render('question/update');
     }
 
     public function createAction()
     {
         require_once App::getRoot() . 'models/Questions.php';
+
         $model = new Questions();
         if (!empty($_POST)) {
             //$model->insert($_POST);
             // Переход на index.php?r=question/index
             $this->redirect('question/index');
         }
+
         $modelTheme = new Themes();
         $themeList = $modelTheme->getList();
+
         $this->render('question/create', ['themeList' => $themeList]);
-    }
-
-
-
-    // Пример того что абстрактный метод напрямую использовать нельзя,
-    // от абстрактного метода можно только унаследоваться другим классом
-    public function someAction(){
-        //$model = new Model();
-        $model->insert($_POST['.....']);
     }
 
     public function deleteAction()
@@ -101,6 +93,7 @@ class QuestionController extends Controller
         $modelTheme = new Themes();
         $currentTheme = $modelTheme->selectOne(['id' => $id]);
         $themeList = $modelTheme->getList();
+
         $this->render('question/theme', ['questions' => $questions, 'theme' => $currentTheme, 'themeList' => $themeList]);
     }
 
@@ -110,8 +103,10 @@ class QuestionController extends Controller
         $model = new Questions();
         $inputData = $this->getParam('Data');
         $model->update(['theme_id' => $inputData['theme_id']], ['id' => $inputData['id']]);
+
         $this->redirect('question/theme', ['id' => $currentThemeId]);
     }
+
 /*
  * UPDATE
  */
@@ -120,6 +115,7 @@ class QuestionController extends Controller
         $currentThemeId = $this->getParamGet('id');
         $model = new Questions();
         $inputData = $this->getParam('Data');
+
         $model->update(['author' => $inputData['author']], ['id' => $inputData['id']]);
         // Переходим обратно на список вопросв в текущей теме.
         $this->redirect('question/theme', ['id' => $currentThemeId]);
@@ -127,18 +123,15 @@ class QuestionController extends Controller
 
     public function updateAnswerAction()
     {
-
-            //$currentThemeId = $this->getParamGet('id');
-            $model = new Questions();
-            $inputData = $this->getParam('Data');
+        $model = new Questions();
+        $inputData = $this->getParam('Data');
         if (isset($inputData['publishButton'])) {
             $model->update(['answer' => $inputData['answer'], 'status' => 'Опубликовано'], ['id' => $inputData['id']]);
-            // Переходим обратно на список вопросв в текущей теме.
         } else if (isset($inputData['saveButton'])) {
             $model->update(['answer' => $inputData['answer'], 'status' => 'Не опубликовано'], ['id' => $inputData['id']]);
         }
-
-            $this->redirect('question/theme', ['id' => $inputData['theme_id']]);
+        // Переходим обратно на список вопросв в текущей теме.
+        $this->redirect('question/theme', ['id' => $inputData['theme_id']]);
 
     }
 
@@ -150,20 +143,20 @@ class QuestionController extends Controller
 
         // $_REQUEST['Data']
         $inputData = $this->getParam('Data');
+
         $model->update($inputData, ['id' => $inputData['id']]);
         $this->redirect('question/index');
-        //$this->render('question/update');
     }
 
     public function updateInThemeAction()
     {
-
         $model = new Questions();
         //$x = $_POST['Data'];
         // $x будет равен ['question' => '....' , 'id' => '...']
 
         // $_REQUEST['Data']
         $inputData = $this->getParam('Data');
+
         $model->update($inputData, ['id' => $inputData['id']]);
         $this->redirect('question/theme', ['id' => $inputData['theme_id']]);
     }
@@ -173,6 +166,7 @@ class QuestionController extends Controller
         //$currentThemeId = $this->getParamGet('id');
         $model = new Questions();
         $inputData = $this->getParam('Data');
+
         if ($inputData['status'] == 'Не опубликовано') {
             $model->update(['status' => 'Опубликовано'], ['id' => $inputData['id']]);
         } else {
@@ -180,7 +174,5 @@ class QuestionController extends Controller
         }
         $this->redirect('question/theme', ['id' => $inputData['theme_id']]);
     }
-
-
 
 }

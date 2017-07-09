@@ -7,17 +7,17 @@ class View
     public static function renderFile($fileName, array $data = [],  $return = false)
     {
         extract($data);
-        //включает буферизацию вывода
+        //Включает буферизацию вывода
         ob_start();
         //Подключаем файл $fileName
         require $fileName;
-        //сохраняем в переменную $result содержимое буфера. ob_get_clean() - получает содержимое текущего буфера и затем удаляет текущий буфер.
+        //Сохраняем в переменную $result содержимое буфера. ob_get_clean() - получает содержимое текущего буфера и затем удаляет текущий буфер.
         $result = ob_get_clean();
-        //если $return = true, то возвращает $result(содержимое буфера)
+        //Если $return = true, то возвращает $result(содержимое буфера)
         if ($return) {
             return $result;
         }
-        //если передаем true, то содержимое $result будет просто выведено на экран
+        //Если передаем true, то содержимое $result будет просто выведено на экран
         echo $result;
     }
 

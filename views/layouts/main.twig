@@ -3,26 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
-
     <link rel="stylesheet" href="/assets/css/reset.css"> <!-- CSS reset -->
     <link rel="stylesheet" href="/assets/css/style.css"> <!-- Resource style -->
     <script src="/assets/js/modernizr.js"></script> <!-- Modernizr -->
     <title>FAQ</title>
 </head>
 <body>
-
 <a href="{{ get_url('site/index') }}">Главная</a><br/>
 <a href="{{ get_url('question/create') }}">Задать вопрос</a><br/>
 {% if not get_user() %}
     <a href="{{ get_url('auth/login') }}">Войти как администратор</a><br/>
 {% else %}
-    <a href="{{ get_url('question/index') }}">Админ панель (пока тут)</a><br/>
+    <a href="{{ get_url('question/index') }}">Таблица администраторов и вопросов без ответа</a><br/>
     <a href="{{ get_url('theme/index') }}">Список тем</a><br/>
     <a href="{{ get_url('auth/logout') }}">Выйти</a><br/><br/>
 {% endif %}
-
 
 <header>
     <h1>FAQ</h1>

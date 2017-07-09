@@ -26,7 +26,7 @@ class App
 
     public static function getConfig()
     {
-        // См. getDb. По аналогии
+        // По аналогии с getDb
         if (self::$config === null) {
             self::$config = require(self::getRoot() . 'configs/main.php');
         }
@@ -81,9 +81,6 @@ class App
 
     public static function getParam($name)
     {
-        // Короче можно еще так сделать
-        // return isset($_GET[$name]) ? $_GET[$name] : null;
-
         if (isset($_REQUEST[$name])) {
             return $_REQUEST[$name];
         } else {
@@ -93,9 +90,6 @@ class App
 
     public static function getParamGet($name)
     {
-        // Короче можно еще так сделать
-        // return isset($_GET[$name]) ? $_GET[$name] : null;
-
         if (isset($_GET[$name])) {
             return $_GET[$name];
         } else {
@@ -131,26 +125,26 @@ class App
         $function = new \Twig_Function('get_user', function () {
             return \lib\App::getUser();
         });
+        $twig->addFunction($function);
 
 
-
-
+        //get_ParamId
         $getParamId = function () {
             return App::getParamGet('id');
         };
+
         $functionGPI = new \Twig_Function('get_ParamId', $getParamId);
         $twig->addFunction($functionGPI);
 
-
-
-
+        //get_AllQuestionsCount
         $getAllQuestionsCount = function ($themeId = []) {
-          //return $params;
+            //return $params;
             return App::getDb()->count('questions', ['theme_id' => $themeId]);
         };
         $functionAQC = new \Twig_Function('get_AllQuestionsCount', $getAllQuestionsCount);
         $twig->addFunction($functionAQC);
 
+        //get_PublishedQuestionsCount
         $getPublishedQuestionsCount = function ($themeId = []) {
             //return $params;
             return App::getDb()->count('questions', ['status' => 'Опубликовано', 'theme_id' => $themeId]);
@@ -158,6 +152,7 @@ class App
         $functionPQC = new \Twig_Function('get_PublishedQuestionsCount', $getPublishedQuestionsCount);
         $twig->addFunction($functionPQC);
 
+        //get_NoAnswerQuestionsCount
         $getNoAnswerQuestionsCount = function ($themeId = []) {
             //return $params;
             return App::getDb()->count('questions', ['theme_id' => $themeId, 'answer' => null]);
@@ -165,15 +160,6 @@ class App
         $functionNAC = new \Twig_Function('get_NoAnswerQuestionsCount', $getNoAnswerQuestionsCount);
         $twig->addFunction($functionNAC);
 
-
-
-
-
-
-
-
-
-        $twig->addFunction($function);
 
         self::$twig = $twig;
     }
